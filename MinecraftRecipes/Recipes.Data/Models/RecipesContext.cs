@@ -22,10 +22,11 @@ namespace Recipes.Data.Models
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
-        public RecipesContext(string connectionString) : this(new DbContextOptionsBuilder()
-            .UseNpgsql(connectionString)
-            .EnableSensitiveDataLogging()
-            .UseLoggerFactory(MyLoggerFactory).Options)
+        public RecipesContext(string connectionString, bool enableSensitiveDataLogging) : this(
+            new DbContextOptionsBuilder()
+                .UseNpgsql(connectionString)
+                .EnableSensitiveDataLogging(enableSensitiveDataLogging)
+                .UseLoggerFactory(MyLoggerFactory).Options)
         {
         }
 
@@ -38,6 +39,7 @@ namespace Recipes.Data.Models
     public class Recipe
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public string Type { get; set; }
         public string Group { get; set; }
         public string Pattern { get; set; }
