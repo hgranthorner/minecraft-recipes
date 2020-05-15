@@ -27,13 +27,16 @@ namespace Recipes.DataImport
             context.Recipes.RemoveRange(context.Recipes);
 
             using var http = new HttpClient();
-            var stream = await http.GetStreamAsync("https://launcher.mojang.com/v1/objects/e3f78cd16f9eb9a52307ed96ebec64241cc5b32d/client.jar");
+            var stream =
+                await http.GetStreamAsync(
+                    "https://launcher.mojang.com/v1/objects/e3f78cd16f9eb9a52307ed96ebec64241cc5b32d/client.jar");
             using var zip = new ZipArchive(stream);
 
             var serializer = new JsonSerializer();
 
             context.Items.RemoveRange(context.Items);
-            var items = zip.Entries.Where(e => e.FullName.StartsWith("assets/minecraft/models/item") && e.FullName.EndsWith(".json"))
+            var items = zip.Entries.Where(e =>
+                    e.FullName.StartsWith("assets/minecraft/models/item") && e.FullName.EndsWith(".json"))
                 .Select(entry =>
                 {
                     return new Item
@@ -46,8 +49,9 @@ namespace Recipes.DataImport
             var count = await context.SaveChangesAsync();
 
             Console.WriteLine($"Saved {count} items");
-            //
-            // var objects = zip.Entries.Where(e => e.FullName.StartsWith("data/minecraft/recipes/") && e.FullName.EndsWith(".json"))
+
+            // var objects = zip.Entries
+            //     .Where(e => e.FullName.StartsWith("data/minecraft/recipes/") && e.FullName.EndsWith(".json"))
             //     .Select(entry =>
             //     {
             //         var stream = zip.GetEntry(entry.FullName).Open();
@@ -59,24 +63,36 @@ namespace Recipes.DataImport
             //
             //         return obj;
             //     })
-            //     .Where(o => o.type == "minecraft:crafting_shaped");
+            //     .Where(o => o.type == "minecraft:crafting_shaped")
+            //     .Select(o =>
+            //     {
+            //         var resultItemName = o.result != null ? o.result.item.ToString() : null;
+            //         var resultItem = resultItemName != null ? context.Items.First(i => i.Name == resultItemName) : null;
+            //         return new Recipe
+            //         {
+            //             Group = o.group,
+            //             Type = o.type,
+            //             Pattern = string.Join('\n', o.pattern),
+            //             Result = resultItem,
+            //             ResultCount = o.result?.count
+            //         };
+            //     });
             //
+            // await context.Recipes.AddRangeAsync(objects);
+            // count = await context.SaveChangesAsync();
+            //
+            // Console.WriteLine($"Saved {count} recipes.");
+
             // foreach (var o in objects)
             // {
-            //     var chars = new HashSet<char>();
-            //     foreach (var line in o.pattern)
-            //     {
-            //         foreach (var c in line)
-            //         {
-            //             chars.Add(c);
-            //         }
-            //     }
-            //     chars.Select(c =>
-            //     {
-            //         var patternKey = new PatternKey();
-            //         patternKey.Character = c.ToString();
-            //         patternKey.Item
-            //     })
+            //     // var chars = new HashSet<char>();
+            //     // foreach (var line in o.pattern)
+            //     // {
+            //     //     foreach (var c in line)
+            //     //     {
+            //     //         chars.Add(c);
+            //     //     }
+            //     // }
             //
             //     var recipe = new Recipe
             //     {
@@ -84,12 +100,11 @@ namespace Recipes.DataImport
             //         Type = o.type,
             //         Pattern = string.Join('\n', o.pattern),
             //         Result = o.result?.item,
-            //         ResultCount = o.result?.count,
-            //         PatternKeys =
+            //         ResultCount = o.result?.count
             //     };
             // }
-
-
+            //
+            //
             // Console.WriteLine(objects.First());
         }
     }
