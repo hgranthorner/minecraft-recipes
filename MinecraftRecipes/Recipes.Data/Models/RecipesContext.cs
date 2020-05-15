@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 
 namespace Recipes.Data.Models
@@ -18,11 +19,21 @@ namespace Recipes.Data.Models
         {
         }
 
+        public static readonly ILoggerFactory MyLoggerFactory
+            = LoggerFactory.Create(builder => { builder.AddConsole(); });
+
+        public RecipesContext(string connectionString) : this(new DbContextOptionsBuilder()
+            .UseNpgsql(connectionString)
+            .EnableSensitiveDataLogging()
+            .UseLoggerFactory(MyLoggerFactory).Options)
+        {
+        }
+
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<PatternKey> PatternKeys { get; set; }
         public DbSet<Item> Items { get; set; }
-
     }
+
 
     public class Recipe
     {
