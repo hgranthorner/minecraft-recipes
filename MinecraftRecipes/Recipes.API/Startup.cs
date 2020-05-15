@@ -2,9 +2,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Recipes.Data.Models;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace Recipes.API
 {
@@ -24,6 +28,18 @@ namespace Recipes.API
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+
+            services.AddDbContext<RecipesContext>(options =>
+            {
+                var server = "recipe-db.cmvt1ttz84am.us-east-1.rds.amazonaws.com";
+                var database = "recipes";
+                var username = "postgres";
+                var password = Configuration["Recipes:Password"];
+
+                var cs = $"Host={server};Port=5432;Database={database};User Id={username};Password={password};";
+
+                options.UseNpgsql(cs, b => b.MigrationsAssembly("Recipes.API"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
