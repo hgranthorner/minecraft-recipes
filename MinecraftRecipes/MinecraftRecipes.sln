@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recipes.API", "Recipes.API\Recipes.API.csproj", "{3EE48233-E34C-47DC-BBEC-2D56DB245118}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recipes.Data", "Recipes.Data\Recipes.Data.csproj", "{2394B6EA-1DB1-4E43-99C4-7FE7E4E39CEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recipes.DataImport", "Recipes.DataImport\Recipes.DataImport.csproj", "{8243CECD-919A-451C-8A38-930EB1B0E456}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{3EE48233-E34C-47DC-BBEC-2D56DB245118}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EE48233-E34C-47DC-BBEC-2D56DB245118}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EE48233-E34C-47DC-BBEC-2D56DB245118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2394B6EA-1DB1-4E43-99C4-7FE7E4E39CEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2394B6EA-1DB1-4E43-99C4-7FE7E4E39CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2394B6EA-1DB1-4E43-99C4-7FE7E4E39CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2394B6EA-1DB1-4E43-99C4-7FE7E4E39CEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8243CECD-919A-451C-8A38-930EB1B0E456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8243CECD-919A-451C-8A38-930EB1B0E456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8243CECD-919A-451C-8A38-930EB1B0E456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8243CECD-919A-451C-8A38-930EB1B0E456}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
