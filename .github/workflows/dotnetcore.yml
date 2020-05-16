@@ -21,3 +21,5 @@ jobs:
       run: dotnet restore ./MinecraftRecipes/MinecraftRecipes.sln
     - name: Build
       run: dotnet build ./MinecraftRecipes/MinecraftRecipes.sln --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
