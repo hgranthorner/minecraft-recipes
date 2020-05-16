@@ -26,10 +26,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Move into correct directory
-        run: |
-          cd MinecraftRecipes/Recipes.API/ClientApp
       - name: npm install and build
         run: |
-          npm install
-          npm build
+          cd MinecraftRecipes/Recipes.API/ClientApp && npm install
+          cd MinecraftRecipes/Recipes.API/ClientApp && npm build
