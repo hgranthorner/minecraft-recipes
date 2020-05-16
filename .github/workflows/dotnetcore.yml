@@ -20,4 +20,4 @@ jobs:
     - name: Install dependencies
       run: dotnet restore ./MinecraftRecipes/MinecraftRecipes.sln
     - name: Build
-      run: dotnet build -./MinecraftRecipes/MinecraftRecipes.sln -configuration Release --no-restore
+      run: dotnet build ./MinecraftRecipes/MinecraftRecipes.sln --configuration Release --no-restore
