@@ -28,6 +28,8 @@ namespace Recipes.API
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+            
+            services.AddSwaggerDocument();
 
             services.AddDbContext<RecipesContext>(options =>
             {
@@ -40,6 +42,7 @@ namespace Recipes.API
 
                 options.UseNpgsql(cs, b => b.MigrationsAssembly("Recipes.API"));
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +64,10 @@ namespace Recipes.API
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+            
 
             app.UseEndpoints(endpoints =>
             {
