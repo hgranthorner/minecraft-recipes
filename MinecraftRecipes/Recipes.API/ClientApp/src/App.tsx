@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {HashRouter, Link, Route, Switch} from 'react-router-dom';
+import {RecipesPage} from './components/RecipesPage';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Hi Evan
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <HashRouter>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/recipes">Recipes</Link>
+                    </li>
+                </ul>
+            </nav>
+
+            <Switch>
+                <Route exact path="/">
+                    <p>This is the home page</p>
+                </Route>
+                <Route path="/recipes">
+                    <RecipesPage/>
+                </Route>
+            </Switch>
+        </HashRouter>
+    );
 }
 
 export default App;
