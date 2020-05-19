@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Recipes.Data.Models;
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 
 namespace Recipes.API
 {
@@ -28,7 +29,7 @@ namespace Recipes.API
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
-            
+
             services.AddSwaggerDocument();
 
             services.AddDbContext<RecipesContext>(options =>
@@ -41,8 +42,9 @@ namespace Recipes.API
                 var cs = $"Host={server};Port=5432;Database={database};User Id={username};Password={password};";
 
                 options.UseNpgsql(cs, b => b.MigrationsAssembly("Recipes.API"));
+                options.UseLoggerFactory(LoggerFactory.Create(builder => { builder.AddConsole(); }));
+                options.EnableSensitiveDataLogging();
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +69,7 @@ namespace Recipes.API
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
-            
+
 
             app.UseEndpoints(endpoints =>
             {
