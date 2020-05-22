@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import {HashRouter, Link, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Link, Route, Switch} from 'react-router-dom';
 import {RecipesPage} from './components/RecipesPage';
 
 function App() {
     return (
-        <HashRouter>
+        <BrowserRouter>
             <nav>
                 <ul>
                     <li>
@@ -21,11 +21,9 @@ function App() {
                 <Route exact path="/">
                     <p>This is the home page</p>
                 </Route>
-                <Route path="/recipes">
-                    <RecipesPage/>
-                </Route>
+                <Route path="/recipes" component={RecipesPage} />
             </Switch>
-        </HashRouter>
+        </BrowserRouter>
     );
 }
 

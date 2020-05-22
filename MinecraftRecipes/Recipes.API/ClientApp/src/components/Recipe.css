@@ -1,0 +1,5 @@
+﻿.recipe img {
+    height: 64px;
+    width: 64px;
+    image-rendering: crisp-edges;
+}
