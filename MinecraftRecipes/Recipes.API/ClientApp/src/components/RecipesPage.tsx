@@ -1,56 +1,61 @@
-﻿import React, {useEffect, useState} from 'react';
-import axios from 'axios'
-import {Recipe} from './Recipe';
-import {useLocation} from 'react-router-dom';
+﻿import React, { useEffect, useState } from "react";
+import axios, { CancelTokenSource } from "axios";
+import { Recipe } from "./Recipe";
+import * as queryString from "querystring";
+import { useHistory, useLocation } from "react-router-dom";
 
-function useDebounce(callback: (...args: any[]) => void, deps: unknown[], ms: number) {
-    const [handle, setHandle] = useState<number | null>(null);
-    useEffect(() => {
+export function RecipesPage() {
+  const location = useLocation();
+  const history = useHistory();
+  const [recipes, setRecipes] = useState<{ id: number; name: string }[]>([]);
 
-        if (handle) {
-            clearTimeout(handle);
-        }
+  const search = location.search.substring(1);
+  const { q: query = "" } = queryString.parse(search);
 
-        const timeoutHandle: unknown = setTimeout(callback, ms);
-        setHandle(timeoutHandle as number);
-    }, deps)
-}
+  useEffect(() => {
+    let source: CancelTokenSource;
+    if (query) {
+      source = axios.CancelToken.source();
 
-export function RecipesPage(props: any) {
-    const urlSearchParams = new URLSearchParams(useLocation().search);
-    const queryFromURL = urlSearchParams.get('q')
-    const [recipes, setRecipes] = useState<{ id: number, name: string }[]>([]);
-    const [query, setQuery] = useState(queryFromURL || '');
+      axios
+        .get(`/api/Search?searchQuery=${query}`, {
+          cancelToken: source.token
+        })
+        .then(res => {
+          setRecipes(res.data);
+        })
+        .catch(() => {});
+    } else {
+      setRecipes([]);
+    }
 
-    useEffect(() => {
-        if (queryFromURL) {
-            axios.get(`/api/Search?searchQuery=${queryFromURL}`).then(res => {
-                setRecipes(res.data);
-            })
-        } else {
-            setRecipes([]);
-        }
-    }, [queryFromURL]);
-
-    useDebounce(() => {
-        console.log(props);
-        urlSearchParams.set('q', query);
-        const location = {
-            ...props.location,
-            search: urlSearchParams.toString()
-        };
-        props.history.replace(location)
-    }, [query], 1000)
-
-    const handleSearchEvent = (e: { target: { value: string } }) => {
-        setQuery(e.target.value);
+    return () => {
+      if (source) {
+        source.cancel();
+      }
     };
-    return <>
-        <div>Hello, RecipesPage!</div>
-        <input type="text" onChange={handleSearchEvent} value={query || ''}/>
-        <p>Results:</p>
-        <ul>
-            {recipes.map(item => <li key={item.id}><Recipe id={item.id}/></li>)}
-        </ul>
+  }, [query]);
+
+  const handleSearchEvent = (e: { target: { value: string } }) => {
+    const value = e.target.value;
+    location.search = queryString.stringify({ q: value });
+    history.replace(location);
+  };
+  return (
+    <>
+      <div>Hello, RecipesPage!</div>
+      <input type="text" onChange={handleSearchEvent} value={query} />
+      <p>Results:</p>
+      <ul>
+        {recipes.map(
+          (item, i) =>
+            i <= 50 && (
+              <li key={item.id}>
+                <Recipe id={item.id} />
+              </li>
+            )
+        )}
+      </ul>
     </>
+  );
 }

@@ -18,7 +18,11 @@ export function Recipe(props: { id: number }) {
             <li>Recipe ID: {id}</li>
             <li>Recipe Name: {recipe.recipeName}</li>
             <li>
-              Image: <img src={`/images/${recipe.result.name}.png`} />
+              Image:
+              <img
+                src={`/images/${recipe.result.name}.png`}
+                alt={recipe.result.name}
+              />
             </li>
             <li>
               Pattern:{" "}
