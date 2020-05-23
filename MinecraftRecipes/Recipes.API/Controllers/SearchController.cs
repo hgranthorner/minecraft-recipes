@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Recipes.Data.Models;
 
 namespace Recipes.API.Controllers
@@ -36,3 +37,4 @@ namespace Recipes.API.Controllers
         }
     }
 }
+
