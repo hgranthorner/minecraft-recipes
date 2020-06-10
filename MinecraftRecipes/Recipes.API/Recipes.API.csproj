@@ -25,6 +25,7 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Recipes.Core\Recipes.Core.csproj" />
     <ProjectReference Include="..\Recipes.Data\Recipes.Data.csproj" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

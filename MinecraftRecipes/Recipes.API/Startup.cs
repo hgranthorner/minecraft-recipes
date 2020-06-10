@@ -32,6 +32,11 @@ namespace Recipes.API
 
             services.AddSwaggerDocument();
 
+            SetUpDbContext(services);
+        }
+
+        protected virtual void SetUpDbContext(IServiceCollection services)
+        {
             services.AddDbContext<RecipesContext>(options =>
             {
                 var server = "recipe-db.cmvt1ttz84am.us-east-1.rds.amazonaws.com";

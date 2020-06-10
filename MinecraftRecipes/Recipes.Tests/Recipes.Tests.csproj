@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoFixture.Xunit2" Version="4.11.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.4" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+      <PackageReference Include="xunit" Version="2.4.1" />
+      <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Recipes.API\Recipes.API.csproj" />
+      <ProjectReference Include="..\Recipes.Data\Recipes.Data.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Recipes.Core.Models;
 using Recipes.Data.Models;
 
 namespace Recipes.API.Controllers
@@ -21,16 +22,14 @@ namespace Recipes.API.Controllers
         public async Task<List<Item>> GetItems() => await _context.Items.ToListAsync();
 
         [HttpGet("{id}")]
-        public async Task<OkObjectResult> GetRecipesForItem(int id) => Ok(new
-        {
-            CreatedFrom = await _context.Recipes
+        public async Task<RecipesForItem> GetRecipesForItem(int id) => new RecipesForItem(
+            await _context.Recipes
                 .Where(r => r.Result.Id == id)
                 .ToListAsync(),
-            IsPartOf = await _context.PatternKeys
+            await _context.PatternKeys
                 .Where(pk => pk.Item.Id == id)
                 .Include(pk => pk.Recipe)
                 .Select(pk => pk.Recipe)
-                .ToListAsync()
-        });
+                .ToListAsync());
     }
 }
