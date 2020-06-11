@@ -18,7 +18,7 @@ namespace Recipes.API.Controllers
         }
 
         [HttpGet("")]
-        public async Task<object> GetRecipes() => await _context.Recipes.Select(r => new
+        public async Task<IEnumerable<object>> GetRecipes() => await _context.Recipes.Select(r => new
         {
             r.Id,
             r.Name
