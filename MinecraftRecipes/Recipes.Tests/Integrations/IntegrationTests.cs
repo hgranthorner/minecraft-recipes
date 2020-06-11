@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Recipes.Core.Models;
 using Recipes.Data.Models;
 using Xunit;
@@ -9,14 +11,14 @@ namespace Recipes.Tests.Integrations
 {
     public class IntegrationTests : IClassFixture<RecipesWebApplicationFactory>
     {
-        private readonly RecipesWebApplicationFactory _factory;
-        private readonly RecipesContext _context;
-
         public IntegrationTests(RecipesWebApplicationFactory factory)
         {
             _factory = factory;
-            _context = RecipesWebApplicationFactory.CreateDatabase();
+            _context = RecipesWebApplicationFactory.Context;
         }
+
+        private readonly RecipesWebApplicationFactory _factory;
+        private readonly RecipesContext _context;
 
         [Theory]
         [InlineData("/api/items")]
@@ -24,7 +26,7 @@ namespace Recipes.Tests.Integrations
         {
             var client = _factory.CreateClient();
             var data = await Helpers.NetworkRequestAsync<IEnumerable<Item>>(client.GetAsync(url));
-            Assert.Equal(_context.Items.Count(), data.Count());
+            data.Should().BeEquivalentTo(_context.Items);
         }
 
         [Fact]
@@ -36,16 +38,12 @@ namespace Recipes.Tests.Integrations
             {
                 var url = urlBase + id;
                 var data = await Helpers.NetworkRequestAsync<RecipesForItem>(client.GetAsync(url));
-                Assert.Equal(
-                    _context.Recipes
-                        .Where(r => r.Result.Id == id)
-                        .Select(x => x.Id),
-                    data.CreatedFrom.Select(r => r.Id));
-                Assert.Equal(
-                    _context.PatternKeys
-                        .Where(pk => pk.Item.Id == id)
-                        .Select(pk => pk.Recipe.Id),
-                    data.IsPartOf.Select(r => r.Id));
+                data.CreatedFrom.Should().BeEquivalentTo(_context.Recipes
+                    .Where(r => r.Result.Id == id));
+                data.IsPartOf.Should().BeEquivalentTo(_context.PatternKeys
+                    .Where(pk => pk.Item.Id == id)
+                    .Include(pk => pk.Recipe)
+                    .Select(pk => pk.Recipe));
             }
         }
     }

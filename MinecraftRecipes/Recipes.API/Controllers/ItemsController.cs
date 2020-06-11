@@ -19,16 +19,18 @@ namespace Recipes.API.Controllers
         }
 
         [HttpGet("")]
-        public async Task<List<Item>> GetItems() => await _context.Items.ToListAsync();
+        public async Task<List<Item>> GetItems() => await _context.Items.AsNoTracking().ToListAsync();
 
         [HttpGet("{id}")]
         public async Task<RecipesForItem> GetRecipesForItem(int id) => new RecipesForItem(
             await _context.Recipes
                 .Where(r => r.Result.Id == id)
+                .AsNoTracking()
                 .ToListAsync(),
             await _context.PatternKeys
                 .Where(pk => pk.Item.Id == id)
                 .Include(pk => pk.Recipe)
+                .AsNoTracking()
                 .Select(pk => pk.Recipe)
                 .ToListAsync());
     }

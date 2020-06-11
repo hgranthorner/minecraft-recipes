@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -8,7 +7,7 @@ namespace Recipes.Tests
     public static class Helpers
     {
         public static async Task<T> NetworkRequestAsync<T>(
-                        Task<HttpResponseMessage> http)
+            Task<HttpResponseMessage> http)
         {
             var response = await http;
 

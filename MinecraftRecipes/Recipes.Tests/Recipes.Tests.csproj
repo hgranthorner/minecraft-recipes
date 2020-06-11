@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="AutoFixture.Xunit2" Version="4.11.0" />
+      <PackageReference Include="FluentAssertions" Version="5.10.3" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.4" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.4" />
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
@@ -16,6 +17,11 @@
     <ItemGroup>
       <ProjectReference Include="..\Recipes.API\Recipes.API.csproj" />
       <ProjectReference Include="..\Recipes.Data\Recipes.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Attributes.cs" />
+      <Compile Remove="Fixtures.cs" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,3 @@
-using System;
-using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -12,15 +10,19 @@ namespace Recipes.Tests
 {
     public class RecipesWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        private static string DatabaseName = "TestingDb";
+        private const string DatabaseName = "TestingDb";
 
-        public static RecipesContext CreateDatabase()
+        public static RecipesContext Context
         {
-            var builder = new DbContextOptionsBuilder();
-            builder.UseInMemoryDatabase(DatabaseName);
-            return new RecipesContext(builder.Options);
+            get
+            {
+                var builder = new DbContextOptionsBuilder<TestRecipesContext>();
+                builder.UseInMemoryDatabase(DatabaseName);
+                builder.EnableSensitiveDataLogging();
+                return new TestRecipesContext(builder.Options);
+            }
         }
-        
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             base.ConfigureWebHost(builder);
@@ -33,30 +35,23 @@ namespace Recipes.Tests
 
                 if (descriptor != null) services.Remove(descriptor);
 
-                services.AddDbContext<RecipesContext>(options =>
+                services.AddDbContext<TestRecipesContext>(options =>
                 {
                     options.UseInMemoryDatabase(DatabaseName);
+                    options.EnableSensitiveDataLogging();
                 });
+
+                services.AddTransient<RecipesContext>(serviceProvider =>
+                    serviceProvider.GetRequiredService<TestRecipesContext>());
 
                 var sp = services.BuildServiceProvider();
 
                 using var scope = sp.CreateScope();
                 var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<RecipesContext>();
+                var db = scopedServices.GetRequiredService<TestRecipesContext>();
 
                 // Ensure the database is created.
                 db.Database.EnsureCreated();
-
-                try
-                {
-                    // Seed the database with test data.
-                    Seed.SeedData(db);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("An error occurred seeding the " +
-                                        $"database with test messages. Error: {ex.Message}");
-                }
             });
         }
     }

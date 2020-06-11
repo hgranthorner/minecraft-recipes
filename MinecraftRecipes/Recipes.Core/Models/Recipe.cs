@@ -11,6 +11,7 @@ namespace Recipes.Core.Models
         public string Pattern { get; set; }
         public List<PatternKey> PatternKeys { get; set; } = new List<PatternKey>();
         public Item Result { get; set; }
+        public int ResultId { get; set; }
         public int ResultCount { get; set; }
     }
 }
