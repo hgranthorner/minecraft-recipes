@@ -18,14 +18,14 @@ namespace Recipes.API.Controllers
         }
 
         [HttpGet("")]
-        public async Task<OkObjectResult> GetRecipes() => Ok(await _context.Recipes.Select(r => new
+        public async Task<IEnumerable<object>> GetRecipes() => await _context.Recipes.Select(r => new
         {
             r.Id,
             r.Name
-        }).ToListAsync());
+        }).ToListAsync();
 
         [HttpGet("{id}")]
-        public async Task<OkObjectResult> GetRecipeInfo(int id)
+        public async Task<object> GetRecipeInfo(int id)
         {
             var recipe = await _context.Recipes
                 .Where(r => r.Id == id)
@@ -46,7 +46,7 @@ namespace Recipes.API.Controllers
                     })
                 })
                 .FirstOrDefaultAsync();
-            return Ok(recipe);
+            return recipe;
         }
     }
 }

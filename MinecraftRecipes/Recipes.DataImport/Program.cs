@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Recipes.Core.Models;
 using Recipes.Data.Models;
 
 namespace Recipes.DataImport

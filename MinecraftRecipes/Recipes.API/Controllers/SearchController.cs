@@ -17,7 +17,7 @@ namespace Recipes.API.Controllers
         }
 
         [HttpGet]
-        public IQueryable GetRecipes(string searchQuery)
+        public IQueryable<object> GetRecipes(string searchQuery)
         {
             var normalizedQuery = searchQuery.ToLower().Replace(" ", "");
             var recipes = _context.Recipes
@@ -37,4 +37,3 @@ namespace Recipes.API.Controllers
         }
     }
 }
-
